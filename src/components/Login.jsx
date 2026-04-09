@@ -9,6 +9,9 @@ import { BASE_URL } from "../utils/constants";
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoginForm,setIsLoginForm] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -31,17 +34,64 @@ const Login = () => {
       setError(err?.response?.data || "Something went wrong");
     }
   }
+
+   const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/signup",
+        { firstName, lastName, emailId, password },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res.data.data));
+      return navigate("/profile");
+    } catch (err) {
+      setError(err?.response?.data || "Something went wrong");
+    }
+  };
+
   return (
     <div className="flex justify-center items-center h-[calc(100vh-84px)] bg-gradient-to-br from-base-100">
       
       <div className="mb-12 bg-base-300 shadow-2xl rounded-2xl p-8 w-80 transition-all duration-300 hover:scale-[1.01]">
         
         <h2 className="text-center text-2xl font-bold mb-6">
-          Welcome Back 👋
+          {isLoginForm ? "Welcome Back 👋" : "Create Account 🎉"}
         </h2>
+        <div>
+        {!isLoginForm && (
+              <>
+                <div className="mb-2">
+                <label className="form-control w-full max-w-xs my-2">
+                  <div className="label">
+                    <span className="label-text">First Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={firstName}
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </label>
+                </div>
 
+                <div className="mb-2">
+                <label className="form-control w-full max-w-xs my-2">
+                  <div className="label">
+                    <span className="label-text">Last Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={lastName}
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </label>
+                </div>
+              </>
+        )}
+        </div>
         {/* Email */}
-        <div className="mb-4">
+        <div className="mb-2">
           <label className="label">
             <span className="label-text font-medium">Email</span>
           </label>
@@ -55,7 +105,7 @@ const Login = () => {
         </div>
 
         {/* Password */}
-        <div className="mb-2">
+        <div className="mb-4">
           <label className="label">
             <span className="label-text font-medium">Password</span>
           </label>
@@ -69,19 +119,19 @@ const Login = () => {
         </div>
 
         {/* Forgot password */}
-        <div className="text-right text-sm mb-4">
+        {/* <div className="text-right text-sm mb-4">
           <a href="#" className="text-primary hover:underline">
             Forgot password?
           </a>
-        </div>
+        </div> */}
 
         <p className="text-red-500 mb-2 text-center">{error}</p>
 
         {/* Button */}
         <button className="btn btn-neutral w-full rounded-xl text-base font-semibold hover:scale-[1.02] transition-all duration-200"
-          onClick={handleLogin}
+          onClick={isLoginForm ? handleLogin : handleSignUp}
         >
-          Login
+          {isLoginForm ? "Login" : "Sign Up"}
         </button>
 
         {/* Divider */}
@@ -89,9 +139,12 @@ const Login = () => {
 
         {/* Signup */}
         <p className="text-center text-sm">
-          Don’t have an account?{" "}
-          <span className="text-primary font-medium cursor-pointer hover:underline">
-            Sign up
+          {isLoginForm ? "Don’t have an account? " : "Already have an account? "}
+          <span 
+          className="text-primary font-medium cursor-pointer hover:underline"
+          onClick={() => setIsLoginForm((value) => !value)}
+          >
+            {isLoginForm ? "Sign Up" : "Login"}
           </span>
         </p>
       </div>

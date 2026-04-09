@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import UserCard from "./UserCard";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
@@ -17,11 +17,16 @@ const EditProfile = ({ user }) => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const [showToast, setShowToast] = useState(false);
+  const _id = user._id;
 
 
   const addSkill = () => {
     const trimmedSkill = skillInput.trim();
-    if (!trimmedSkill) return;
+    if (!trimmedSkill){ 
+      setError("Skill cannot be empty");
+      setSkillInput("")
+      return;
+    }
     if (skills.map(s => s.toLowerCase()).includes(trimmedSkill.toLowerCase())) {
       setError("Skill already added");
       return;
@@ -125,7 +130,7 @@ const EditProfile = ({ user }) => {
                     <span className="label-text">Age:</span>
                   </div>
                   <input
-                    type="text"
+                    type="number"
                     value={age}
                     className="input input-bordered w-full max-w-xs"
                     onChange={(e) => setAge(e.target.value)}
@@ -205,7 +210,8 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
         <UserCard
-          user={{ firstName, lastName, photoUrl, age, gender, about, skills }}
+          user={{ _id,firstName, lastName, photoUrl, age, gender, about, skills }}
+          showButtons={false}
         />
       </div>
       {showToast && (
