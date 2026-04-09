@@ -10,12 +10,12 @@ const UserCard = ({ user,showButtons }) => {
 
    const handleSendRequest = async (status, userId) => {
     try {
+      dispatch(removeUserFromFeed(userId));
       const res = await axios.post(
         BASE_URL + "/request/send/" + status + "/" + userId,
         {},
         { withCredentials: true }
       );
-      dispatch(removeUserFromFeed(userId));
     } catch (err) {
       console.error("Error sending request:", err);
     }
@@ -34,7 +34,7 @@ const UserCard = ({ user,showButtons }) => {
     <h2 className="break-words whitespace-normal">{about}</h2>
     {age && <h2>{age} years</h2>}
     {gender && <h2>Gender: {gender}</h2>}
-    {skills.length > 0 && (
+    {skills && skills.length > 0 && (
       <div className="mt-4">
         <div className="flex flex-wrap gap-2">
           {skills.map((skill, index) => (

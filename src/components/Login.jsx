@@ -142,7 +142,10 @@ const Login = () => {
           {isLoginForm ? "Don’t have an account? " : "Already have an account? "}
           <span 
           className="text-primary font-medium cursor-pointer hover:underline"
-          onClick={() => setIsLoginForm((value) => !value)}
+          onClick={() => {
+            setError("");
+            setIsLoginForm((value) => !value)
+          }}
           >
             {isLoginForm ? "Sign Up" : "Login"}
           </span>

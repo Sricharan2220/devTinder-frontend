@@ -15,7 +15,6 @@ const Body = () => {
 
   const fetchUser = async () =>{
     try{
-      console.log("fetching user data...");
       const res = await axios.get(BASE_URL + "/profile/view",
         {withCredentials: true}
       );
@@ -33,9 +32,11 @@ const Body = () => {
   },[]);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <NavBar />
-      <Outlet />
+      <main className="flex-grow">
+        <Outlet /> 
+      </main>
       <Footer />
     </div>
   )
