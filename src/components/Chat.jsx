@@ -40,7 +40,7 @@ const Chat = () => {
 
   useEffect(() => {
     fetchChatMessages();
-  }, [targetUserId]);
+  }, []);
 
   useEffect(() => {
     if (!userId) return;
@@ -69,8 +69,6 @@ const Chat = () => {
       targetUserId,
       text: newMessage,
     });
-    // Optional: Optimistically add message to UI
-    setMessages((prev) => [...prev, { firstName: user.firstName, lastName: user.lastName, text: newMessage, time: new Date().toISOString() }]);
     setNewMessage("");
   };
 
