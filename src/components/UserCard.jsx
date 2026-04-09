@@ -9,7 +9,6 @@ const UserCard = ({ user,showButtons }) => {
   const dispatch = useDispatch();
 
    const handleSendRequest = async (status, userId) => {
-    setError("");
     try {
       const res = await axios.post(
         BASE_URL + "/request/send/" + status + "/" + userId,
